@@ -9,7 +9,7 @@ log="unlock-chatgpt-test-result.log"
 clear;
 echo -e "${GREEN}** Chat GPT ip可用性检测${PLAIN} ${Yellow}by JCNF·那坨${PLAIN}" && echo -e "Chat GPT ip可用性检测 by JCNF·那坨" > ${log};
 echo -e "${RED}** 提示 本工具测试结果仅供参考，请以实际使用为准${PLAIN}" && echo -e "提示 本工具测试结果仅供参考，请以实际使用为准" >> ${log};
-echo -e " ** 系统时间: $(date)" && echo -e " ** 系统时间: $(date)" >> ${log};
+echo -e "** 系统时间: $(date)" && echo -e " ** 系统时间: $(date)" >> ${log};
 
 # Check if curl is installed
 if ! command -v curl &> /dev/null; then
@@ -42,7 +42,8 @@ fi
 function UnlockChatGPTTest() {
     if [[ $(curl --max-time 10 -sS https://chat.openai.com/ -I | grep "text/plain") != "" ]]
     then
-        echo -e " ChatGPT: ${RED}IP不支持 IP is BLOCKED${PLAIN}" | tee -a $log
+        local ip="$(ip addr show | grep -E '^[ ]*inet' | grep -m1 global | awk '{print $2}' | cut -d/ -f1)"
+        echo -e " 本机IP：(${ip}) ${RED}IP不支持ChatGPT IP is BLOCKED${PLAIN}" | tee -a $log
         return
     fi
     local countryCode="$(curl --max-time 10 -sS https://chat.openai.com/cdn-cgi/trace | grep "loc=" | awk -F= '{print $2}')";
@@ -53,7 +54,8 @@ function UnlockChatGPTTest() {
     if [ -n "$countryCode" ]; then
         support_countryCodes=(T1 XX AL DZ AD AO AG AR AM AU AT AZ BS BD BB BE BZ BJ BT BA BW BR BG BF CV CA CL CO KM CR HR CY DK DJ DM DO EC SV EE FJ FI FR GA GM GE DE GH GR GD GT GN GW GY HT HN HU IS IN ID IQ IE IL IT JM JP JO KZ KE KI KW KG LV LB LS LR LI LT LU MG MW MY MV ML MT MH MR MU MX MC MN ME MA MZ MM NA NR NP NL NZ NI NE NG MK NO OM PK PW PA PG PE PH PL PT QA RO RW KN LC VC WS SM ST SN RS SC SL SG SK SI SB ZA ES LK SR SE CH TH TG TO TT TN TR TV UG AE US UY VU ZM BO BN CG CZ VA FM MD PS KR TW TZ TL GB)
         if [[ "${support_countryCodes[@]}"  =~ "${countryCode}" ]];  then
-            echo -e " ChatGPT: ${GREEN}支持 Yes (Region: ${countryCode})${PLAIN}" | tee -a $log
+            local ip="$(ip addr show | grep -E '^[ ]*inet' | grep -m1 global | awk '{print $2}' | cut -d/ -f1)"
+            echo -e " 本机IP:(${ip}) ${GREEN}支持ChatGPT Yes (Region: ${countryCode})${PLAIN}" | tee -a $log
             return
         else
             echo -e " ChatGPT: ${RED}No${PLAIN}" | tee -a $log
