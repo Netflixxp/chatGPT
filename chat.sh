@@ -1,5 +1,15 @@
 #!/bin/bash
 
+RED='\033[0;31m'
+PLAIN='\033[0m'
+GREEN='\033[0;32m'
+log="unlock-chatgpt-test-result.log"
+
+clear;
+echo -e "Chat GPT ip可用性检测" && echo -e "Chat GPT ip可用性检测" > ${log};
+echo -e "${RED}提示 本工具测试结果仅供参考，请以实际使用为准${PLAIN}" && echo -e "提示 本工具测试结果仅供参考，请以实际使用为准" >> ${log};
+echo -e " ** 系统时间: $(date)" && echo -e " ** 系统时间: $(date)" >> ${log};
+
 # Check if curl is installed
 if ! command -v curl &> /dev/null; then
   echo "curl is not installed. Installing curl..."
@@ -26,10 +36,7 @@ if ! command -v grep &> /dev/null; then
   fi
 fi
 
-RED='\033[0;31m'
-PLAIN='\033[0m'
-GREEN='\033[0;32m'
-log="unlock-chatgpt-test-result.log"
+
 
 function UnlockChatGPTTest() {
     if [[ $(curl --max-time 10 -sS https://chat.openai.com/ -I | grep "text/plain") != "" ]]
