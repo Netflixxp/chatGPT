@@ -28,6 +28,7 @@ fi
 
 RED='\033[0;31m'
 PLAIN='\033[0m'
+GREEN='\033[0;32m'
 log="unlock-chatgpt-test-result.log"
 
 function UnlockChatGPTTest() {
