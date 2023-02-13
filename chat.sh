@@ -43,7 +43,7 @@ function UnlockChatGPTTest() {
     if [[ $(curl --max-time 10 -sS https://chat.openai.com/ -I | grep "text/plain") != "" ]]
     then
         local ip="$(ip addr show | grep -E '^[ ]*inet' | grep -m1 global | awk '{print $2}' | cut -d/ -f1)"
-        echo -e " 抱歉！本机IP：${ip}) ${RED}目前不支持ChatGPT IP is BLOCKED${PLAIN}" | tee -a $log
+        echo -e " 抱歉！本机IP：${ip} ${RED}目前不支持ChatGPT IP is BLOCKED${PLAIN}" | tee -a $log
         return
     fi
     local countryCode="$(curl --max-time 10 -sS https://chat.openai.com/cdn-cgi/trace | grep "loc=" | awk -F= '{print $2}')";
